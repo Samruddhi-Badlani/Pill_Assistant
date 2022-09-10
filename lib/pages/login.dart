@@ -8,6 +8,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +39,8 @@ class _LoginState extends State<Login> {
                       margin: EdgeInsets.only(left: 35, right: 35),
                       child: Column(
                         children: [
-                          TextField(
+                          TextFormField(
+                            controller: emailController,
                             style: TextStyle(color: Colors.black),
                             decoration: InputDecoration(
                                 fillColor: Colors.grey.shade100,
@@ -51,7 +53,7 @@ class _LoginState extends State<Login> {
                           SizedBox(
                             height: 30,
                           ),
-                          TextField(
+                          TextFormField(
                             style: TextStyle(),
                             obscureText: true,
                             decoration: InputDecoration(
@@ -78,7 +80,9 @@ class _LoginState extends State<Login> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      print(emailController.text.toLowerCase());
+                                    },
                                     icon: Icon(
                                       Icons.arrow_forward,
                                     )),

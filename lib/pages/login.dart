@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -81,7 +84,8 @@ class _LoginState extends State<Login> {
                                 child: IconButton(
                                     color: Colors.white,
                                     onPressed: () {
-                                      print(emailController.text.toLowerCase());
+                                      log(emailController.text.toLowerCase());
+                                      Navigator.pushNamed(context, 'home');
                                     },
                                     icon: Icon(
                                       Icons.arrow_forward,

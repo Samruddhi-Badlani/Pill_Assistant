@@ -131,14 +131,6 @@ Widget _buildPopupDialog(BuildContext context, Medicine medicine) {
       medicine.expiryDate.year.toString()));
   list.add(Text('Available : ' + medicine.availableCounts.toString()));
 
-  medicine.dosages.forEach((element) {
-    String str = "${element.time}";
-    TimeOfDay t = element.time;
-    String formattedTime = t.format(context);
-    print(formattedTime);
-    list.add(Text(
-        "Time : " + formattedTime + " Amount : " + element.number.toString()));
-  });
   return new AlertDialog(
     title: Text(medicine.name),
     content: new Column(

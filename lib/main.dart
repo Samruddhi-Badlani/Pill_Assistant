@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:pill_assistant/pages/home-page.dart';
 import 'package:pill_assistant/pages/login.dart';
+import 'package:pill_assistant/pages/med-form.dart';
 import 'package:pill_assistant/pages/myMeds.dart';
 import 'package:pill_assistant/pages/register.dart';
 
@@ -13,7 +14,8 @@ void main() {
       'login': (context) => Login(),
       'register': (context) => Register(),
       'home': (context) => MyHomePage(),
-      'myMeds': (context) => MyMeds()
+      'myMeds': (context) => MyMeds(),
+      'addMedicine': (context) => FormApp()
     },
   ));
 }

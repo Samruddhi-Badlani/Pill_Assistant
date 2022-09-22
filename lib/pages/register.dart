@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -10,6 +12,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,8 +49,9 @@ class _RegisterState extends State<Register> {
                       margin: EdgeInsets.only(left: 35, right: 35),
                       child: Column(
                         children: [
-                          TextField(
+                          TextFormField(
                             style: TextStyle(color: Colors.white),
+                            controller: firstNameController,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -58,17 +65,43 @@ class _RegisterState extends State<Register> {
                                     color: Colors.black,
                                   ),
                                 ),
-                                hintText: "Name",
+                                hintText: "First Name",
                                 hintStyle: TextStyle(color: Colors.white),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 20,
                           ),
-                          TextField(
+                          TextFormField(
                             style: TextStyle(color: Colors.white),
+                            controller: lastNameController,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                hintText: "Last Name",
+                                hintStyle: TextStyle(color: Colors.white),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                )),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            controller: emailController,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -88,11 +121,9 @@ class _RegisterState extends State<Register> {
                                   borderRadius: BorderRadius.circular(10),
                                 )),
                           ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          TextField(
+                          TextFormField(
                             style: TextStyle(color: Colors.white),
+                            controller: passwordController,
                             obscureText: true,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -114,7 +145,7 @@ class _RegisterState extends State<Register> {
                                 )),
                           ),
                           SizedBox(
-                            height: 40,
+                            height: 20,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,7 +162,36 @@ class _RegisterState extends State<Register> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      print("Hello sign up called");
+                                      print(firstNameController.text);
+                                      print(lastNameController.text);
+                                      print(emailController.text);
+                                      print(passwordController.text);
+
+                                      final http.Response response =
+                                          await http.post(
+                                        Uri.parse(
+                                            'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
+                                        headers: <String, String>{
+                                          'Content-Type':
+                                              'application/json; charset=UTF-8',
+                                        },
+                                        body: jsonEncode(<String, String>{
+                                          'email': emailController.text,
+                                          'firstName': firstNameController.text,
+                                          'lastName': lastNameController.text,
+                                          'password': passwordController.text
+                                        }),
+                                      );
+                                      if (response.statusCode == 200) {
+                                        print(json.decode(response.body));
+
+                                        Navigator.pushNamed(context, 'login');
+                                      } else {
+                                        print(response.statusCode);
+                                      }
+                                    },
                                     icon: Icon(
                                       Icons.arrow_forward,
                                     )),
@@ -139,7 +199,7 @@ class _RegisterState extends State<Register> {
                             ],
                           ),
                           SizedBox(
-                            height: 40,
+                            height: 20,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

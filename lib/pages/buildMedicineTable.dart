@@ -84,6 +84,11 @@ class _MedicineTableState extends State<MedicineTable> {
               ],
               rows: list,
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'addMedicine');
+                },
+                child: Text('Add medicine'))
           ],
         ),
       ),

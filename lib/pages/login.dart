@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -83,8 +85,31 @@ class _LoginState extends State<Login> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {
+                                    onPressed: () async {
                                       log(emailController.text.toLowerCase());
+
+                                      //  final http.Response response =
+                                      //     await http.post(
+                                      //   Uri.parse(
+                                      //       'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
+                                      //   headers: <String, String>{
+                                      //     'Content-Type':
+                                      //         'application/json; charset=UTF-8',
+                                      //   },
+                                      //   body: jsonEncode(<String, String>{
+                                      //     'email': emailController.text,
+
+                                      //     'password': passwordController.text
+                                      //   }),
+                                      // );
+                                      // if (response.statusCode == 200) {
+                                      //   print(json.decode(response.body));
+                                      //   print(json.decode(
+                                      //       response.headers.toString()));
+                                      //   Navigator.pushNamed(context, 'login');
+                                      // } else {
+                                      //   print(response.statusCode);
+                                      // }
                                       Navigator.pushNamed(context, 'home');
                                     },
                                     icon: Icon(

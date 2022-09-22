@@ -45,16 +45,47 @@ class _RegisterState extends State<Register> {
           'password': passwordController.text
         }),
       );
-      if (response.statusCode == 200) {
-        print(json.decode(response.body));
 
-        Navigator.pushNamed(context, 'login');
-      } else {
+      int len = passwordController.text.length;
+
+      bool emailValid =
+          RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+              .hasMatch(emailController.text);
+
+      print("$len");
+
+      if (emailValid && len > 5) {
+        if (response.statusCode == 200) {
+          print(json.decode(response.body));
+
+          Navigator.pushNamed(context, 'login');
+        } else {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text("Alert Dialog Box"),
+              content: const Text("Invalid Credentials"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(14),
+                    child: const Text("Retry"),
+                  ),
+                ),
+              ],
+            ),
+          );
+          print(response.statusCode);
+        }
+      } else if (!emailValid) {
         showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
             title: const Text("Alert Dialog Box"),
-            content: const Text("Invalid Credentials"),
+            content: const Text("Invalid Email"),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -68,7 +99,25 @@ class _RegisterState extends State<Register> {
             ],
           ),
         );
-        print(response.statusCode);
+      } else {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Alert Dialog Box"),
+            content: const Text("Password too short"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  child: const Text("Retry"),
+                ),
+              ),
+            ],
+          ),
+        );
       }
     }
   }

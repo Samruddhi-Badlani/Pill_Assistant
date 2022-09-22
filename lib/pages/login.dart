@@ -140,8 +140,12 @@ class _LoginState extends State<Login> {
                                           );
                                           if (response.statusCode == 200) {
                                             print(response.statusCode);
+                                            print(response
+                                                .headers['authorization']);
                                             if (response.body.isNotEmpty) {
                                               json.decode(response.body);
+                                            } else {
+                                              print('login response is empty');
                                             }
 
                                             Navigator.pushNamed(
@@ -205,3 +209,6 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+//200 success
+//else invalid credentials

@@ -23,14 +23,13 @@ class MyHomePage extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       body: Center(
-        child: RaisedButton(
+        child: TextButton(
           child: Text(
             'Show Pop-up',
             style: TextStyle(
               color: Colors.white,
             ),
           ),
-          color: Colors.black,
           onPressed: () {
             showDialog(
               context: context,
@@ -44,6 +43,7 @@ class MyHomePage extends StatelessWidget {
 }
 
 Widget _buildPopupDialog(BuildContext context) {
+  // ignore: unnecessary_new
   return new AlertDialog(
     title: const Text('Popup example'),
     content: new Column(
@@ -54,11 +54,10 @@ Widget _buildPopupDialog(BuildContext context) {
       ],
     ),
     actions: <Widget>[
-      new FlatButton(
+      TextButton(
         onPressed: () {
           Navigator.of(context).pop();
         },
-        textColor: Theme.of(context).primaryColor,
         child: Text('Close'),
       ),
     ],

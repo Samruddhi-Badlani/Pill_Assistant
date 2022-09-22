@@ -152,8 +152,31 @@ class _LoginState extends State<Login> {
                                                 context, 'home');
                                           } else {
                                             print(response.statusCode);
-                                            Navigator.pushNamed(
-                                                context, 'login');
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                title: const Text(
+                                                    "Alert Dialog Box"),
+                                                content:
+                                                    const Text("Invalid Login"),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(ctx).pop();
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              14),
+                                                      child:
+                                                          const Text("Retry"),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                            // Navigator.pushNamed(
+                                            //     context, 'login');
                                           }
                                         }
                                       },

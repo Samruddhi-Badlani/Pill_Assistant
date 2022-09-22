@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'dart:developer';
@@ -14,6 +14,12 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  String email = '';
+  String password = '';
+  final _formKey = GlobalKey<FormState>();
+  final _passKey = GlobalKey<FormFieldState>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,115 +48,151 @@ class _LoginState extends State<Login> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(left: 35, right: 35),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            controller: emailController,
-                            style: TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
-                                fillColor: Colors.grey.shade100,
-                                filled: true,
-                                hintText: "Email",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                )),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          TextFormField(
-                            style: TextStyle(),
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                fillColor: Colors.grey.shade100,
-                                filled: true,
-                                hintText: "Password",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                )),
-                          ),
-                          SizedBox(
-                            height: 40,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Sign in',
-                                style: TextStyle(
-                                    fontSize: 27, fontWeight: FontWeight.w700),
-                              ),
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Color(0xff4c505b),
-                                child: IconButton(
-                                    color: Colors.white,
-                                    onPressed: () async {
-                                      log(emailController.text.toLowerCase());
-
-                                      //  final http.Response response =
-                                      //     await http.post(
-                                      //   Uri.parse(
-                                      //       'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
-                                      //   headers: <String, String>{
-                                      //     'Content-Type':
-                                      //         'application/json; charset=UTF-8',
-                                      //   },
-                                      //   body: jsonEncode(<String, String>{
-                                      //     'email': emailController.text,
-
-                                      //     'password': passwordController.text
-                                      //   }),
-                                      // );
-                                      // if (response.statusCode == 200) {
-                                      //   print(json.decode(response.body));
-                                      //   print(json.decode(
-                                      //       response.headers.toString()));
-                                      //   Navigator.pushNamed(context, 'login');
-                                      // } else {
-                                      //   print(response.statusCode);
-                                      // }
-                                      Navigator.pushNamed(context, 'home');
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_forward,
-                                    )),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 40,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, 'register');
-                                },
-                                child: Text(
-                                  'Sign Up',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Color(0xff4c505b),
-                                      fontSize: 18),
-                                ),
-                                style: ButtonStyle(),
-                              ),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Forgot Password',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Color(0xff4c505b),
-                                      fontSize: 18,
-                                    ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: emailController,
+                              style: TextStyle(color: Colors.black),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter a name';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onSaved: (value) {
+                                setState(() {
+                                  email = value.toString();
+                                });
+                              },
+                              decoration: InputDecoration(
+                                  fillColor: Colors.grey.shade100,
+                                  filled: true,
+                                  hintText: "Email",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   )),
-                            ],
-                          )
-                        ],
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                              style: TextStyle(),
+                              controller: passwordController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter a name';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onSaved: (value) {
+                                setState(() {
+                                  password = value.toString();
+                                });
+                              },
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  fillColor: Colors.grey.shade100,
+                                  filled: true,
+                                  hintText: "Password",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Sign in',
+                                  style: TextStyle(
+                                      fontSize: 27,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Color(0xff4c505b),
+                                  child: IconButton(
+                                      color: Colors.white,
+                                      onPressed: () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          log(emailController.text
+                                              .toLowerCase());
+
+                                          final http.Response response =
+                                              await http.post(
+                                            Uri.parse(
+                                                'https://pill-management-backend.herokuapp.com/mobile-app-ws/users/login'),
+                                            headers: <String, String>{
+                                              'Content-Type':
+                                                  'application/json; charset=UTF-8',
+                                            },
+                                            body: jsonEncode(<String, String>{
+                                              'email': emailController.text,
+                                              'password':
+                                                  passwordController.text
+                                            }),
+                                          );
+                                          if (response.statusCode == 200) {
+                                            print(response.statusCode);
+                                            if (response.body.isNotEmpty) {
+                                              json.decode(response.body);
+                                            }
+
+                                            Navigator.pushNamed(
+                                                context, 'home');
+                                          } else {
+                                            print(response.statusCode);
+                                            Navigator.pushNamed(
+                                                context, 'login');
+                                          }
+                                        }
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_forward,
+                                      )),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, 'register');
+                                  },
+                                  child: Text(
+                                    'Sign Up',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Color(0xff4c505b),
+                                        fontSize: 18),
+                                  ),
+                                  style: ButtonStyle(),
+                                ),
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Forgot Password',
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Color(0xff4c505b),
+                                        fontSize: 18,
+                                      ),
+                                    )),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],

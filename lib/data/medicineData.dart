@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pill_assistant/model/medicine.dart';
 
-final allMedicines = <Medicine>[
+var allMedicines = <Medicine>[
   Medicine(name: 'Calpol', dosages: [Dosage(time: TimeOfDay.now(), number: 1)]),
   Medicine(
       name: 'Disprin', dosages: [Dosage(time: TimeOfDay.now(), number: 2)]),

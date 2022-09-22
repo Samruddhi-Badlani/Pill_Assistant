@@ -16,6 +16,41 @@ class _RegisterState extends State<Register> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String password = '';
+
+  onSubmit() async {
+    print("Hello sign up called");
+    print(firstNameController.text);
+    print(lastNameController.text);
+    print(emailController.text);
+    print(passwordController.text);
+
+    final http.Response response = await http.post(
+      Uri.parse(
+          'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': emailController.text,
+        'firstName': firstNameController.text,
+        'lastName': lastNameController.text,
+        'password': passwordController.text
+      }),
+    );
+    if (response.statusCode == 200) {
+      print(json.decode(response.body));
+
+      Navigator.pushNamed(context, 'login');
+    } else {
+      print(response.statusCode);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,7 +76,7 @@ class _RegisterState extends State<Register> {
             SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.28),
+                    top: MediaQuery.of(context).size.height * 0.18),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,6 +87,18 @@ class _RegisterState extends State<Register> {
                           TextFormField(
                             style: TextStyle(color: Colors.white),
                             controller: firstNameController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a name';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                firstName = value.toString();
+                              });
+                            },
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -72,11 +119,23 @@ class _RegisterState extends State<Register> {
                                 )),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           TextFormField(
                             style: TextStyle(color: Colors.white),
                             controller: lastNameController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a name';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                lastName = value.toString();
+                              });
+                            },
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -97,11 +156,23 @@ class _RegisterState extends State<Register> {
                                 )),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           TextFormField(
                             style: TextStyle(color: Colors.white),
                             controller: emailController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a name';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                email = value.toString();
+                              });
+                            },
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -121,9 +192,24 @@ class _RegisterState extends State<Register> {
                                   borderRadius: BorderRadius.circular(10),
                                 )),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           TextFormField(
                             style: TextStyle(color: Colors.white),
                             controller: passwordController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a name';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                password = value.toString();
+                              });
+                            },
                             obscureText: true,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -145,7 +231,7 @@ class _RegisterState extends State<Register> {
                                 )),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,36 +248,36 @@ class _RegisterState extends State<Register> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () async {
-                                      print("Hello sign up called");
-                                      print(firstNameController.text);
-                                      print(lastNameController.text);
-                                      print(emailController.text);
-                                      print(passwordController.text);
+                                    onPressed: () => {onSubmit()},
+                                    //   print("Hello sign up called");
+                                    //   print(firstNameController.text);
+                                    //   print(lastNameController.text);
+                                    //   print(emailController.text);
+                                    //   print(passwordController.text);
 
-                                      final http.Response response =
-                                          await http.post(
-                                        Uri.parse(
-                                            'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
-                                        headers: <String, String>{
-                                          'Content-Type':
-                                              'application/json; charset=UTF-8',
-                                        },
-                                        body: jsonEncode(<String, String>{
-                                          'email': emailController.text,
-                                          'firstName': firstNameController.text,
-                                          'lastName': lastNameController.text,
-                                          'password': passwordController.text
-                                        }),
-                                      );
-                                      if (response.statusCode == 200) {
-                                        print(json.decode(response.body));
+                                    //   final http.Response response =
+                                    //       await http.post(
+                                    //     Uri.parse(
+                                    //         'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
+                                    //     headers: <String, String>{
+                                    //       'Content-Type':
+                                    //           'application/json; charset=UTF-8',
+                                    //     },
+                                    //     body: jsonEncode(<String, String>{
+                                    //       'email': emailController.text,
+                                    //       'firstName': firstNameController.text,
+                                    //       'lastName': lastNameController.text,
+                                    //       'password': passwordController.text
+                                    //     }),
+                                    //   );
+                                    //   if (response.statusCode == 200) {
+                                    //     print(json.decode(response.body));
 
-                                        Navigator.pushNamed(context, 'login');
-                                      } else {
-                                        print(response.statusCode);
-                                      }
-                                    },
+                                    //     Navigator.pushNamed(context, 'login');
+                                    //   } else {
+                                    //     print(response.statusCode);
+                                    //   }
+                                    // },
                                     icon: Icon(
                                       Icons.arrow_forward,
                                     )),
@@ -199,7 +285,7 @@ class _RegisterState extends State<Register> {
                             ],
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

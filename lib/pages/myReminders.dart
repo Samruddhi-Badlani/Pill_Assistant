@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pill_assistant/pages/buildMedicineTable.dart';
+import 'package:pill_assistant/pages/buildReminderTable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyMeds extends StatefulWidget {
-  const MyMeds({super.key});
+class MyReminders extends StatefulWidget {
+  const MyReminders({super.key});
 
   @override
-  State<MyMeds> createState() => _MyMedsState();
+  State<MyReminders> createState() => _MyRemindersState();
 }
 
-class _MyMedsState extends State<MyMeds> {
+class _MyRemindersState extends State<MyReminders> {
   final columns = ['Name', 'Dosage', 'Total'];
 
   @override
@@ -22,7 +23,7 @@ class _MyMedsState extends State<MyMeds> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (!prefs.containsKey('authToken')) {
-      Navigator.pushNamed(context, '/login');
+      Navigator.pushNamed(context, 'login');
     } else {
       print(prefs.get('authToken'));
     }
@@ -35,7 +36,7 @@ class _MyMedsState extends State<MyMeds> {
           appBar: AppBar(
             title: Text('Pill Assistant'),
           ),
-          body: const MedicineTable()),
+          body: const ReminderTable()),
     );
   }
 }

@@ -7,14 +7,14 @@ import 'package:pill_assistant/model/medicine.dart';
 import 'package:pill_assistant/data/medicineData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MedicineTable extends StatefulWidget {
-  const MedicineTable({super.key});
+class ReminderTable extends StatefulWidget {
+  const ReminderTable({super.key});
 
   @override
-  State<MedicineTable> createState() => _MedicineTableState();
+  State<ReminderTable> createState() => _ReminderTableState();
 }
 
-class _MedicineTableState extends State<MedicineTable> {
+class _ReminderTableState extends State<ReminderTable> {
   final columns = ['Name', 'Dosage'];
   List<DataRow> list = [];
   List<Medicine> medicines = List.of(allMedicines);
@@ -29,7 +29,7 @@ class _MedicineTableState extends State<MedicineTable> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (!prefs.containsKey('authToken')) {
-      Navigator.pushNamed(context, '/login');
+      Navigator.pushNamed(context, 'login');
     } else {
       print(prefs.get('authToken'));
     }
@@ -56,7 +56,7 @@ class _MedicineTableState extends State<MedicineTable> {
                       log(element.number.toString());
                     });
                   },
-                  child: Text('View Information'),
+                  child: Text('View Dosage'),
                 ),
                 Icon(Icons.edit),
                 Icon(Icons.delete)
@@ -79,7 +79,7 @@ class _MedicineTableState extends State<MedicineTable> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "My Medicines",
+                  "My Reminders",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -91,7 +91,7 @@ class _MedicineTableState extends State<MedicineTable> {
             DataTable(
               columns: [
                 DataColumn(
-                    label: Text('Name',
+                    label: Text('Medicine',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold))),
                 DataColumn(
@@ -103,9 +103,9 @@ class _MedicineTableState extends State<MedicineTable> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, 'addMedicine');
+                  Navigator.pushNamed(context, 'addReminder');
                 },
-                child: Text('Add medicine'))
+                child: Text('Add Reminder'))
           ],
         ),
       ),
@@ -115,21 +115,6 @@ class _MedicineTableState extends State<MedicineTable> {
 
 Widget _buildPopupDialog(BuildContext context, Medicine medicine) {
   List<Widget> list = [];
-
-  list.add(Text('Available Count : ' + medicine.availableCounts.toString()));
-  list.add(Text('Manufacture : ' +
-      medicine.manufactureDate.day.toString() +
-      '/' +
-      medicine.manufactureDate.month.toString() +
-      '/' +
-      medicine.manufactureDate.year.toString()));
-  list.add(Text('Expiry : ' +
-      medicine.expiryDate.day.toString() +
-      '/' +
-      medicine.expiryDate.month.toString() +
-      '/' +
-      medicine.expiryDate.year.toString()));
-  list.add(Text('Available : ' + medicine.availableCounts.toString()));
 
   medicine.dosages.forEach((element) {
     String str = "${element.time}";

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -16,10 +17,26 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  _loadUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey('authToken')) {
+      print(prefs.get('authToken'));
+      Navigator.pushNamed(context, 'home');
+    }
+  }
+
   String email = '';
   String password = '';
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormFieldState>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -124,6 +141,10 @@ class _LoginState extends State<Login> {
                                           log(emailController.text
                                               .toLowerCase());
 
+                                          SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
+
                                           final http.Response response =
                                               await http.post(
                                             Uri.parse(
@@ -147,6 +168,12 @@ class _LoginState extends State<Login> {
                                             } else {
                                               print('login response is empty');
                                             }
+
+                                            prefs.setString(
+                                                'authToken',
+                                                response
+                                                    .headers['authorization']
+                                                    .toString());
 
                                             Navigator.pushNamed(
                                                 context, 'home');
@@ -175,8 +202,6 @@ class _LoginState extends State<Login> {
                                                 ],
                                               ),
                                             );
-                                            // Navigator.pushNamed(
-                                            //     context, 'login');
                                           }
                                         }
                                       },

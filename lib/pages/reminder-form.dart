@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FormApp extends StatelessWidget {
-  const FormApp({Key? key}) : super(key: key);
+class ReminderFormApp extends StatelessWidget {
+  const ReminderFormApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Add Medicine',
+      title: 'Add Reminder',
       theme: ThemeData(brightness: Brightness.light),
-      home: const FormPage(title: 'Add Medicine Page'),
+      home: const ReminderFormPage(title: 'Add Reminder Page'),
     );
   }
 }
 
-class FormPage extends StatefulWidget {
-  const FormPage({Key? key, required this.title}) : super(key: key);
+class ReminderFormPage extends StatefulWidget {
+  const ReminderFormPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _FormPageState createState() => _FormPageState();
+  _ReminderFormPageState createState() => _ReminderFormPageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _ReminderFormPageState extends State<ReminderFormPage> {
   @override
   void initState() {
     super.initState();
@@ -142,7 +142,7 @@ class _SignUpFormState extends State<SignUpForm> {
     }
 
     formWidget.add(ElevatedButton(
-        child: const Text('Add Medicine'), onPressed: onPressedSubmit));
+        child: const Text('Add Reminder'), onPressed: onPressedSubmit));
 
     return formWidget;
   }

@@ -322,7 +322,7 @@ class _RegisterState extends State<Register> {
                                   child: IconButton(
                                       color: Colors.white,
                                       onPressed: () => {onSubmit()},
-                                      //   print("Hello sign up called");
+                                      /*   print("Hello sign up called");
                                       //   print(firstNameController.text);
                                       //   print(lastNameController.text);
                                       //   print(emailController.text);
@@ -330,27 +330,27 @@ class _RegisterState extends State<Register> {
 
                                       //   final http.Response response =
                                       //       await http.post(
-                                      //     Uri.parse(
-                                      //         'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
-                                      //     headers: <String, String>{
-                                      //       'Content-Type':
-                                      //           'application/json; charset=UTF-8',
-                                      //     },
-                                      //     body: jsonEncode(<String, String>{
-                                      //       'email': emailController.text,
-                                      //       'firstName': firstNameController.text,
-                                      //       'lastName': lastNameController.text,
-                                      //       'password': passwordController.text
-                                      //     }),
-                                      //   );
-                                      //   if (response.statusCode == 200) {
-                                      //     print(json.decode(response.body));
+                                             Uri.parse(
+                                                 'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
+                                             headers: <String, String>{
+                                               'Content-Type':
+                                                   'application/json; charset=UTF-8',
+                                             },
+                                             body: jsonEncode(<String, String>{
+                                               'email': emailController.text,
+                                               'firstName': firstNameController.text,
+                                               'lastName': lastNameController.text,
+                                               'password': passwordController.text
+                                             }),
+                                           );
+                                           if (response.statusCode == 200) {
+                                             print(json.decode(response.body));
 
                                       //     Navigator.pushNamed(context, 'login');
                                       //   } else {
                                       //     print(response.statusCode);
-                                      //   }
-                                      // },
+                                         }
+                                        },*/
                                       icon: Icon(
                                         Icons.arrow_forward,
                                       )),

@@ -50,6 +50,24 @@ class _RegisterState extends State<Register> {
 
         Navigator.pushNamed(context, 'login');
       } else {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Alert Dialog Box"),
+            content: const Text("Invalid Credentials"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  child: const Text("Retry"),
+                ),
+              ),
+            ],
+          ),
+        );
         print(response.statusCode);
       }
     }

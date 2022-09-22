@@ -115,11 +115,10 @@ Widget _buildPopupDialog(BuildContext context, Medicine medicine) {
       children: list,
     ),
     actions: <Widget>[
-      new FlatButton(
+      new TextButton(
         onPressed: () {
           Navigator.of(context).pop();
         },
-        textColor: Theme.of(context).primaryColor,
         child: Text('Close'),
       ),
     ],

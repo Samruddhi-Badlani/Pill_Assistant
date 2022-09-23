@@ -120,8 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             )
                           ],
                         ),
-                      )
-                      ),
+                      )),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, 'profile');
@@ -141,6 +140,31 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text(
                             "My profile",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, 'profile');
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.pink[100],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.qr_code,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Scan/Read qr",
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )
                         ],

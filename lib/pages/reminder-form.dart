@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ReminderFormApp extends StatelessWidget {
-  const ReminderFormApp({Key? key}) : super(key: key);
+// class ReminderFormApp extends StatelessWidget {
+//   const ReminderFormApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Add Reminder',
-      theme: ThemeData(brightness: Brightness.light),
-      home: const ReminderFormPage(title: 'Add Reminder Page'),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Add Reminder',
+//       theme: ThemeData(brightness: Brightness.light),
+//       home: const ReminderFormPage(title: 'Add Reminder Page'),
+//     );
+//   }
+// }
 
 class ReminderFormPage extends StatefulWidget {
   const ReminderFormPage({Key? key, required this.title}) : super(key: key);

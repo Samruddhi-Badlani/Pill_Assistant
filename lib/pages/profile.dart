@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 // import 'package:settings_ui/pages/settings.dart';
 
-class SettingsUI extends StatelessWidget {
-  const SettingsUI({super.key});
+// class SettingsUI extends StatelessWidget {
+//   const SettingsUI({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Setting UI",
-      home: EditProfilePage(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: "Setting UI",
+//       home: EditProfilePage(),
+//     );
+//   }
+// }
 
 class EditProfilePage extends StatefulWidget {
   EditProfilePage({Key? key}) : super(key: key);
@@ -32,9 +32,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.green,
+            color: Colors.black,
           ),
-          onPressed: () {},
+          onPressed: () {Navigator.of(context).pop();}
         ),
         actions: [
           IconButton(

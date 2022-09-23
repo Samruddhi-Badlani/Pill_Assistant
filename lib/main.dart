@@ -24,10 +24,10 @@ Future<void> main() async {
       'home': (context) => MyHomePage(),
       'myMeds': (context) => MyMeds(),
       'myReminders': (context) => MyReminders(),
-      'addMedicine': (context) => FormApp(),
-      'addReminder': (context) => ReminderFormApp(),
-      'profile' : (context) => SettingsUI(),
-      'settings' : (context) => Settings()
+      'addMedicine': (context) => FormPage(title: 'Add Medicine Page'),
+      'addReminder': (context) => ReminderFormPage(title: 'Add Reminder Page'),
+      'profile' : (context) => EditProfilePage(),
+      'settings' : (context) => SettingsScreen()
     },
   ));
 }

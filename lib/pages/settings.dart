@@ -6,21 +6,21 @@ import 'package:ionicons/ionicons.dart';
 //   runApp(const MyApp());
 // }
 
-class Settings extends StatelessWidget {
-  const Settings({Key? key}) : super(key: key);
+// class Settings extends StatelessWidget {
+//   const Settings({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Settings',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const SettingsScreen(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Settings',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: const SettingsScreen(),
+//     );
+//   }
+// }
 
 class SettingsTile extends StatelessWidget {
   final Color color;
@@ -90,18 +90,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-          leading: BackButton(
-          color: Colors.black,
-          onPressed:() => {}
-        ),
-
+      appBar: AppBar(   
         title: const Text("Settings"),
-        automaticallyImplyLeading: true
-        
-
-
       ),
       body: SafeArea(
         child: Padding(

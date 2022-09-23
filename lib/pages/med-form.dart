@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FormApp extends StatelessWidget {
-  const FormApp({Key? key}) : super(key: key);
+// class FormApp extends StatelessWidget {
+//   const FormApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Add Medicine',
-      theme: ThemeData(brightness: Brightness.light),
-      home: const FormPage(title: 'Add Medicine Page'),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Add Medicine',
+//       theme: ThemeData(brightness: Brightness.light),
+//       home: const FormPage(title: 'Add Medicine Page'),
+//     );
+//   }
+// }
 
 class FormPage extends StatefulWidget {
-  const FormPage({Key? key, required this.title}) : super(key: key);
+  String title='Add Medicine';
+  FormPage({Key? key, required this.title}) : super(key: key);
 
-  final String title;
+  
 
   @override
   _FormPageState createState() => _FormPageState();
@@ -46,6 +47,14 @@ class _FormPageState extends State<FormPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        // leading: IconButton(
+        //   icon: Icon(
+        //     Icons.arrow_back,
+        //     color: Colors.green,
+        //   ),
+        //   onPressed: () {Navigator.of(context).pop();}
+        // )
+        
       ),
       body: Container(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),

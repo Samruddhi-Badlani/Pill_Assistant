@@ -9,6 +9,8 @@ import 'package:pill_assistant/pages/myReminders.dart';
 import 'package:pill_assistant/pages/register.dart';
 import 'package:pill_assistant/pages/reminder-form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pill_assistant/pages/profile.dart';
+import 'package:pill_assistant/pages/settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +25,9 @@ Future<void> main() async {
       'myMeds': (context) => MyMeds(),
       'myReminders': (context) => MyReminders(),
       'addMedicine': (context) => FormApp(),
-      'addReminder': (context) => ReminderFormApp()
+      'addReminder': (context) => ReminderFormApp(),
+      'profile' : (context) => SettingsUI(),
+      'settings' : (context) => Settings()
     },
   ));
 }

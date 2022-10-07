@@ -145,10 +145,18 @@ class _LoginState extends State<Login> {
                                               await SharedPreferences
                                                   .getInstance();
 
+                                          final queryParameters = {
+                                            'type': 'user'
+                                          };
+
+                                          var uri = Uri.https(
+                                              'pill-management-backend.herokuapp.com',
+                                              "/mobile-app-ws/users/login",
+                                              queryParameters);
+
                                           final http.Response response =
                                               await http.post(
-                                            Uri.parse(
-                                                'https://pill-management-backend.herokuapp.com/mobile-app-ws/users/login'),
+                                            uri,
                                             headers: <String, String>{
                                               'Content-Type':
                                                   'application/json; charset=UTF-8',
@@ -177,8 +185,8 @@ class _LoginState extends State<Login> {
                                                     .toString());
 
                                             prefs.setString(
-                                                'userId',
-                                                response.headers['userId']
+                                                'userid',
+                                                response.headers['userid']
                                                     .toString());
 
                                             Navigator.pushNamed(

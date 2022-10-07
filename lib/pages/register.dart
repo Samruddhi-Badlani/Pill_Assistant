@@ -32,9 +32,13 @@ class _RegisterState extends State<Register> {
       print(emailController.text);
       print(passwordController.text);
 
+      final queryParameters = {'type': 'user'};
+
+      var uri = Uri.https('pill-management-backend.herokuapp.com',
+          "/mobile-app-ws/users", queryParameters);
+
       final http.Response response = await http.post(
-        Uri.parse(
-            'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
+        uri,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

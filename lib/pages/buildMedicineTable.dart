@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:pill_assistant/model/medicine.dart';
 import 'package:pill_assistant/data/medicineData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MedicineTable extends StatefulWidget {
   const MedicineTable({super.key});
@@ -19,7 +21,8 @@ class _MedicineTableState extends State<MedicineTable> {
   List<DataRow> list = [];
   List<Medicine> medicines = List.of(allMedicines);
 
-  @override
+  var myFetchedMedicine = [];
+
   void initState() {
     super.initState();
     _loadUserInfo();
@@ -28,19 +31,49 @@ class _MedicineTableState extends State<MedicineTable> {
   _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!prefs.containsKey('authToken')) {
-      Navigator.pushNamed(context, '/login');
-    } else {
-      print(prefs.get('authToken'));
+    final userId = prefs.get('userid').toString();
+
+    final queryParameters = {'type': 'user'};
+
+    var uri = Uri.https('pill-management-backend.herokuapp.com',
+        "/mobile-app-ws/users/${userId}/medicine", queryParameters);
+
+    final http.Response response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': prefs.get('authToken').toString(),
+        'userid': userId
+      },
+    );
+
+    print(response.body);
+    print(response.statusCode);
+    print(response.headers);
+
+    var myObj = json.decode(response.body);
+
+    print(myObj);
+
+    for (var item in myObj) {
+      setState(() {
+        myFetchedMedicine.add(item);
+      });
+    }
+
+    print(myFetchedMedicine);
+
+    for (var item in myFetchedMedicine) {
+      print(item["name"]);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    medicines.forEach((Medicine m) => {
-          log(m.name),
+    myFetchedMedicine.forEach((var m) => {
+          log(m["name"]),
           list.add(DataRow(cells: [
-            DataCell(Text(m.name)),
+            DataCell(Text(m["name"])),
             DataCell(Row(
               children: [
                 TextButton(
@@ -50,23 +83,51 @@ class _MedicineTableState extends State<MedicineTable> {
                       builder: (BuildContext context) =>
                           _buildPopupDialog(context, m),
                     );
-                    m.dosages.forEach((element) {
+                    m["dosages"]["dosageContextList"].forEach((element) {
                       log("Hello pressed");
-                      log(element.time.toString());
-                      log(element.number.toString());
+                      //log(element.time.toString());
+                      //log(element.number.toString());
                     });
                   },
                   child: Text('View Information'),
                 ),
                 Icon(Icons.edit),
-                Icon(Icons.delete)
+                IconButton(
+                    onPressed: () async {
+                      var medicineId = m["id"];
+
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      final userId = prefs.get('userid').toString();
+
+                      final queryParameters = {'type': 'user'};
+
+                      var uri = Uri.https(
+                          'pill-management-backend.herokuapp.com',
+                          "/mobile-app-ws/users/${userId}/medicine/${medicineId}",
+                          queryParameters);
+
+                      final http.Response response = await http.delete(
+                        uri,
+                        headers: <String, String>{
+                          'Content-Type': 'application/json; charset=UTF-8',
+                          'authorization': prefs.get('authToken').toString(),
+                          'userid': userId
+                        },
+                      );
+
+                      print(response.body);
+                      print(response.statusCode);
+                      print(response.headers);
+                    },
+                    icon: Icon(Icons.delete))
               ],
             ))
           ])),
-          m.dosages.forEach((element) {
-            log(element.time.toString());
-            log(element.number.toString());
-          })
+          //m.dosages.forEach((element) {
+          //log(element.time.toString());
+          //log(element.number.toString());
+          // })
         });
 
     return Container(
@@ -113,26 +174,15 @@ class _MedicineTableState extends State<MedicineTable> {
   }
 }
 
-Widget _buildPopupDialog(BuildContext context, Medicine medicine) {
+Widget _buildPopupDialog(BuildContext context, var medicine) {
   List<Widget> list = [];
 
-  list.add(Text('Available Count : ' + medicine.availableCounts.toString()));
-  list.add(Text('Manufacture : ' +
-      medicine.manufactureDate.day.toString() +
-      '/' +
-      medicine.manufactureDate.month.toString() +
-      '/' +
-      medicine.manufactureDate.year.toString()));
-  list.add(Text('Expiry : ' +
-      medicine.expiryDate.day.toString() +
-      '/' +
-      medicine.expiryDate.month.toString() +
-      '/' +
-      medicine.expiryDate.year.toString()));
-  list.add(Text('Available : ' + medicine.availableCounts.toString()));
+  list.add(Text('Available Count : ' + medicine["availableCount"].toString()));
+  list.add(Text('Manufacture : ' + medicine["manufacturingDate"]));
+  list.add(Text('Expiry : ' + medicine["expiryDate"]));
 
   return new AlertDialog(
-    title: Text(medicine.name),
+    title: Text(medicine["name"]),
     content: new Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

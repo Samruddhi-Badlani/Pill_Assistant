@@ -32,6 +32,8 @@ dependencies:
 
   shared_preferences: ^2.0.15
 
+  basic_utils: ^5.3.0
+
   
 
 

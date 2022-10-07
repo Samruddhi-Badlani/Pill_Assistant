@@ -73,6 +73,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _passKey = GlobalKey<FormFieldState>();
 
   String userId = '';
+  String authToken = '';
   @override
   void initState() {
     super.initState();
@@ -87,7 +88,8 @@ class _SignUpFormState extends State<SignUpForm> {
     } else {
       print(prefs.get('authToken'));
 
-      userId = prefs.get('userId').toString();
+      userId = prefs.get('userid').toString();
+      authToken = prefs.get('authToken').toString();
     }
   }
 
@@ -364,8 +366,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     formWidget.add(Column(children: [
       for (var item in dosages)
-        // Text('${item["dosageCount"]} ${item["dosageTime"]}')
-        Text('${item["dosageTime"].hour}')
+        Text('${item["dosageCount"]} ${item["dosageTime"]}')
     ]));
 
     formWidget.add(TextButton(
@@ -379,7 +380,7 @@ class _SignUpFormState extends State<SignUpForm> {
         setState(() {
           dosages.add({
             "dosageCount": dosageCountController.text,
-            "dosageTime": _dosageTime
+            "dosageTime": timeinput.text
           });
         });
         print(dosages);
@@ -397,39 +398,49 @@ class _SignUpFormState extends State<SignUpForm> {
 
         print("Name " + _name);
 
+        var myList = [];
+
+        for (var item in dosages) {
+          myList.add({
+            "dosageTime": item["dosageTime"].toString(),
+            "dosesCount": item["dosageCount"]
+          });
+        }
+
+        print(myList);
+
+        var bodyContent = {
+          "availableCount": _count,
+          "dateOfEnd": dateOfEndController.text,
+          "dateOfStart": dateOfStartController.text,
+          "dosages": {"dosageContextList": myList},
+          "expiryDate": dateOfExpiryController.text,
+          "manufacturingDate": dateOfManufactureController.text,
+          "name": _name
+        };
+
+        var myContent = json.encode(bodyContent);
+        print(myContent);
+
         print("Age " + _count.toString());
 
-        final http.Response response = await http.post(
-          Uri.parse(
-              'https://pill-management-backend.herokuapp.com/mobile-app-ws/users/${userId}/medicine'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, dynamic>{
-            "availableCount": _count,
-            "dateOfEnd": dateOfEndController.text,
-            "dateOfStart": dateOfStartController.text,
-            "dosages": {
-              for (var item in dosages)
-                {
-                  "dosageContextList": [
-                    {
-                      "dosageTime": {
-                        "hour": '${item["dosageTime"].hour}',
-                        "minute": '${item["dosageTime"].minute}',
-                        "nano": 0,
-                        "second": '${item["dosageTime"].seconds}'
-                      },
-                      "dosesCount": item["dosageCount"]
-                    }
-                  ]
-                }
+        print(authToken);
+        print(userId);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        final queryParameters = {'type': 'user'};
+
+        var uri = Uri.https('pill-management-backend.herokuapp.com',
+            "/mobile-app-ws/users/${userId}/medicine", queryParameters);
+
+        final http.Response response = await http.post(uri,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'authorization': prefs.get('authToken').toString(),
+              'userid': userId
             },
-            "expiryDate": dateOfExpiryController.text,
-            "manufacturingDate": dateOfManufactureController.text,
-            "name": _name
-          }),
-        );
+            body: myContent);
 
         print(response.body);
         print(response.statusCode);

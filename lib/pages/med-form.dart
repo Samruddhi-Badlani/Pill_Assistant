@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'dart:convert';
 
 // class FormApp extends StatelessWidget {
 //   const FormApp({Key? key}) : super(key: key);
@@ -70,7 +72,29 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormFieldState>();
 
-  TextEditingController dateinput = TextEditingController();
+  String userId = '';
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  _loadUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (!prefs.containsKey('authToken')) {
+      Navigator.pushNamed(context, '/login');
+    } else {
+      print(prefs.get('authToken'));
+
+      userId = prefs.get('userId').toString();
+    }
+  }
+
+  TextEditingController dateOfStartController = TextEditingController();
+  TextEditingController dateOfEndController = TextEditingController();
+  TextEditingController dateOfManufactureController = TextEditingController();
+  TextEditingController dateOfExpiryController = TextEditingController();
   TextEditingController timeinput = TextEditingController();
 
   TextEditingController dosageCountController = TextEditingController();
@@ -84,7 +108,7 @@ class _SignUpFormState extends State<SignUpForm> {
   var dosages = [];
 
   int _dosageCount = 1;
-  String _dosageTime = "02:02:22";
+  DateTime _dosageTime = DateTime(2022);
 
   List<DropdownMenuItem<int>> genderList = [];
 
@@ -121,7 +145,7 @@ class _SignUpFormState extends State<SignUpForm> {
     formWidget.add(TextFormField(
       decoration: const InputDecoration(
           labelText: 'Enter available Counts', hintText: 'Dosage'),
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter a value';
@@ -136,8 +160,12 @@ class _SignUpFormState extends State<SignUpForm> {
       },
     ));
     formWidget.add(TextField(
-      controller: dateinput, //editing controller of this TextField
+      controller: dateOfStartController,
+
       decoration: InputDecoration(
+          errorText: dateOfStartController.text.isEmpty
+              ? 'Value Can\'t Be Empty'
+              : null,
           icon: Icon(Icons.calendar_today), //icon of text field
           labelText: "Date of Start" //label text of field
           ),
@@ -159,7 +187,7 @@ class _SignUpFormState extends State<SignUpForm> {
           //you can implement different kind of Date Format here according to your requirement
 
           setState(() {
-            dateinput.text =
+            dateOfStartController.text =
                 formattedDate; //set output date to TextField value.
           });
         } else {
@@ -169,8 +197,10 @@ class _SignUpFormState extends State<SignUpForm> {
     ));
 
     formWidget.add(TextField(
-      controller: dateinput, //editing controller of this TextField
+      controller: dateOfEndController, //editing controller of this TextField
       decoration: InputDecoration(
+          errorText:
+              dateOfEndController.text.isEmpty ? 'Value Can\'t Be Empty' : null,
           icon: Icon(Icons.calendar_today), //icon of text field
           labelText: "Date of End" //label text of field
           ),
@@ -192,7 +222,7 @@ class _SignUpFormState extends State<SignUpForm> {
           //you can implement different kind of Date Format here according to your requirement
 
           setState(() {
-            dateinput.text =
+            dateOfEndController.text =
                 formattedDate; //set output date to TextField value.
           });
         } else {
@@ -202,8 +232,12 @@ class _SignUpFormState extends State<SignUpForm> {
     ));
 
     formWidget.add(TextField(
-      controller: dateinput, //editing controller of this TextField
+      controller:
+          dateOfManufactureController, //editing controller of this TextField
       decoration: InputDecoration(
+          errorText: dateOfManufactureController.text.isEmpty
+              ? 'Value Can\'t Be Empty'
+              : null,
           icon: Icon(Icons.calendar_today), //icon of text field
           labelText: "Manufacturing Date" //label text of field
           ),
@@ -225,7 +259,7 @@ class _SignUpFormState extends State<SignUpForm> {
           //you can implement different kind of Date Format here according to your requirement
 
           setState(() {
-            dateinput.text =
+            dateOfManufactureController.text =
                 formattedDate; //set output date to TextField value.
           });
         } else {
@@ -235,8 +269,11 @@ class _SignUpFormState extends State<SignUpForm> {
     ));
 
     formWidget.add(TextField(
-      controller: dateinput, //editing controller of this TextField
+      controller: dateOfExpiryController, //editing controller of this TextField
       decoration: InputDecoration(
+          errorText: dateOfExpiryController.text.isEmpty
+              ? 'Value Can\'t Be Empty'
+              : null,
           icon: Icon(Icons.calendar_today), //icon of text field
           labelText: "Expiry Date" //label text of field
           ),
@@ -258,7 +295,7 @@ class _SignUpFormState extends State<SignUpForm> {
           //you can implement different kind of Date Format here according to your requirement
 
           setState(() {
-            dateinput.text =
+            dateOfExpiryController.text =
                 formattedDate; //set output date to TextField value.
           });
         } else {
@@ -269,6 +306,7 @@ class _SignUpFormState extends State<SignUpForm> {
     formWidget.add(TextField(
       controller: timeinput, //editing controller of this TextField
       decoration: InputDecoration(
+          errorText: timeinput.text.isEmpty ? 'Value Can\'t Be Empty' : null,
           icon: Icon(Icons.timer), //icon of text field
           labelText: "Dosage Time" //label text of field
           ),
@@ -287,15 +325,17 @@ class _SignUpFormState extends State<SignUpForm> {
 //output 10:51 PM
 
           //converting to DateTime so that we can further format on different pattern.
-          print(parsedTime); //output 1970-01-01 22:53:00.000
+          print(parsedTime);
+
+          //output 1970-01-01 22:53:00.000
           String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
           print(formattedTime); //output 14:59:00
           //DateFormat() is from intl package, you can format the time on any pattern you need.
 
           setState(() {
             timeinput.text = formattedTime;
-            _dosageTime =
-                formattedTime.toString(); //set the value of text field.
+
+            _dosageTime = parsedTime;
           });
         } else {
           print("Time is not selected");
@@ -324,7 +364,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
     formWidget.add(Column(children: [
       for (var item in dosages)
-        Text('${item["dosageCount"]} ${item["dosageTime"]}')
+        // Text('${item["dosageCount"]} ${item["dosageTime"]}')
+        Text('${item["dosageTime"].hour}')
     ]));
 
     formWidget.add(TextButton(
@@ -346,13 +387,53 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Text('Add Dose'),
     ));
 
-    void onPressedSubmit() {
-      if (_formKey.currentState!.validate()) {
+    void onPressedSubmit() async {
+      if (_formKey.currentState!.validate() &&
+          dateOfStartController.text.isNotEmpty &&
+          dateOfEndController.text.isNotEmpty &&
+          dateOfManufactureController.text.isNotEmpty &&
+          dateOfExpiryController.text.isNotEmpty) {
         _formKey.currentState?.save();
 
         print("Name " + _name);
 
         print("Age " + _count.toString());
+
+        final http.Response response = await http.post(
+          Uri.parse(
+              'https://pill-management-backend.herokuapp.com/mobile-app-ws/users/${userId}/medicine'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, dynamic>{
+            "availableCount": _count,
+            "dateOfEnd": dateOfEndController.text,
+            "dateOfStart": dateOfStartController.text,
+            "dosages": {
+              for (var item in dosages)
+                {
+                  "dosageContextList": [
+                    {
+                      "dosageTime": {
+                        "hour": '${item["dosageTime"].hour}',
+                        "minute": '${item["dosageTime"].minute}',
+                        "nano": 0,
+                        "second": '${item["dosageTime"].seconds}'
+                      },
+                      "dosesCount": item["dosageCount"]
+                    }
+                  ]
+                }
+            },
+            "expiryDate": dateOfExpiryController.text,
+            "manufacturingDate": dateOfManufactureController.text,
+            "name": _name
+          }),
+        );
+
+        print(response.body);
+        print(response.statusCode);
+        print(response.headers);
 
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Form Submitted')));

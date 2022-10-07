@@ -176,10 +176,18 @@ class _LoginState extends State<Login> {
                                                     .headers['authorization']
                                                     .toString());
 
+                                            prefs.setString(
+                                                'userId',
+                                                response.headers['userId']
+                                                    .toString());
+
                                             Navigator.pushNamed(
                                                 context, 'home');
                                           } else {
                                             print(response.statusCode);
+                                            print(response.body);
+                                            print(response.headers);
+
                                             showDialog(
                                               context: context,
                                               builder: (ctx) => AlertDialog(

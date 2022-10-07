@@ -38,15 +38,23 @@ class _RegisterState extends State<Register> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'email': emailController.text,
           'firstName': firstNameController.text,
           'lastName': lastNameController.text,
-          'password': passwordController.text
+          'password': passwordController.text,
+          'emergencyContacts': {
+            'contactlist': [
+              {'contactNumber': "9123412345", 'name': "Rohit"}
+            ]
+          }
         }),
       );
 
       int len = passwordController.text.length;
+
+      print(response.statusCode);
+      print(response.body);
 
       bool emailValid =
           RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')

@@ -26,8 +26,8 @@ Future<void> main() async {
       'myReminders': (context) => MyReminders(),
       'addMedicine': (context) => FormPage(title: 'Add Medicine Page'),
       'addReminder': (context) => ReminderFormPage(title: 'Add Reminder Page'),
-      'profile' : (context) => EditProfilePage(),
-      'settings' : (context) => SettingsScreen()
+      'profile': (context) => EditProfilePage(),
+      'settings': (context) => SettingsScreen()
     },
   ));
 }

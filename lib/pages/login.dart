@@ -161,6 +161,7 @@ class _LoginState extends State<Login> {
                                           );
                                           if (response.statusCode == 200) {
                                             print(response.statusCode);
+                                            print(response.headers);
                                             print(response
                                                 .headers['authorization']);
                                             if (response.body.isNotEmpty) {

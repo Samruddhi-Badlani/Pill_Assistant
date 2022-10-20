@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pill_assistant/model/medicine.dart';
 import 'package:pill_assistant/data/medicineData.dart';
+import 'package:pill_assistant/pages/edit-med-form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -54,11 +55,12 @@ class _MedicineTableState extends State<MedicineTable> {
     var myObj = json.decode(response.body);
 
     print(myObj);
-
-    for (var item in myObj) {
-      setState(() {
-        myFetchedMedicine.add(item);
-      });
+    if (this.mounted) {
+      for (var item in myObj) {
+        setState(() {
+          myFetchedMedicine.add(item);
+        });
+      }
     }
 
     print(myFetchedMedicine);
@@ -89,9 +91,21 @@ class _MedicineTableState extends State<MedicineTable> {
                       //log(element.number.toString());
                     });
                   },
-                  child: Text('View Information'),
+                  child: Text('View '),
                 ),
-                Icon(Icons.edit),
+                IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditMedicinePage(
+                            medicine: m,
+                            title: 'Edit Medicine Page',
+                          ),
+                        ),
+                      );
+                    }),
                 IconButton(
                     onPressed: () async {
                       var medicineId = m["id"];
@@ -130,45 +144,39 @@ class _MedicineTableState extends State<MedicineTable> {
           // })
         });
 
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.black,
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "My Medicines",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "My Medicines",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 24,
               ),
             ),
-            DataTable(
-              columns: [
-                DataColumn(
-                    label: Text('Name',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold))),
-                DataColumn(
-                    label: Text('Action',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)))
-              ],
-              rows: list,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'addMedicine');
-                },
-                child: Text('Add medicine'))
-          ],
-        ),
+          ),
+          DataTable(
+            columns: [
+              DataColumn(
+                  label: Text('Name',
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold))),
+              DataColumn(
+                  label: Text('Action',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))
+            ],
+            rows: list,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'addMedicine');
+              },
+              child: Text('Add medicine'))
+        ],
       ),
     );
   }
@@ -180,6 +188,11 @@ Widget _buildPopupDialog(BuildContext context, var medicine) {
   list.add(Text('Available Count : ' + medicine["availableCount"].toString()));
   list.add(Text('Manufacture : ' + medicine["manufacturingDate"]));
   list.add(Text('Expiry : ' + medicine["expiryDate"]));
+  for (var x in medicine["dosages"]["dosageContextList"]) {
+    print(x);
+    list.add(Text('Time : ' + x["dosageTime"]));
+    list.add(Text('Count : ' + x["dosesCount"].toString()));
+  }
 
   return new AlertDialog(
     title: Text(medicine["name"]),

@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, 'profile');
+                      Navigator.pushNamed(context, 'scanQR');
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -165,6 +165,31 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text(
                             "Scan/Read qr",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, 'generateQR');
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.pink[100],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.qr_code,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Generate QR code",
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )
                         ],

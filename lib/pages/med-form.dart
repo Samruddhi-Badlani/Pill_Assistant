@@ -377,12 +377,15 @@ class _SignUpFormState extends State<SignUpForm> {
         print(dosageCountController.text);
         print(_dosageTime);
 
-        setState(() {
-          dosages.add({
-            "dosageCount": dosageCountController.text,
-            "dosageTime": timeinput.text
+        if (dosageCountController.text == '' || timeinput.text == '') {
+        } else {
+          setState(() {
+            dosages.add({
+              "dosageCount": dosageCountController.text,
+              "dosageTime": timeinput.text
+            });
           });
-        });
+        }
         print(dosages);
       },
       child: Text('Add Dose'),
@@ -393,7 +396,8 @@ class _SignUpFormState extends State<SignUpForm> {
           dateOfStartController.text.isNotEmpty &&
           dateOfEndController.text.isNotEmpty &&
           dateOfManufactureController.text.isNotEmpty &&
-          dateOfExpiryController.text.isNotEmpty) {
+          dateOfExpiryController.text.isNotEmpty &&
+          dosageCountController.text.isNotEmpty) {
         _formKey.currentState?.save();
 
         print("Name " + _name);

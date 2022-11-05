@@ -1,7 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const Color tdBlue = Color(0xFF0277BD);
 
@@ -16,17 +13,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _loadUserInfo();
-  }
-
-  _loadUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (!prefs.containsKey('authToken')) {
-      Navigator.pushNamed(context, '/login');
-    } else {
-      print(prefs.get('authToken'));
-    }
   }
 
   @override
@@ -63,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
                           ),
                           Text(
-                            "My meds",
+                            "Patient's medicines",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -91,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
                           ),
                           Text(
-                            "My reminders",
+                            "Patient's reminders",
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )
                         ],
@@ -210,15 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.all(20),
                     ),
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-
-                      if (preferences.containsKey('authToken')) {
-                        preferences.remove('authToken');
-                        Navigator.pushNamed(context, 'login');
-                      }
-                    },
+                    onPressed: () {},
                     child: Text('Log Out')),
               )
             ],

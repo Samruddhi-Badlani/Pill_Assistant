@@ -283,6 +283,13 @@ class _CaretakerHomeState extends State<CaretakerHome> {
 
       if (linkresponse.statusCode == 200) {
         print("Patient added successfully");
+
+        setState(() {
+          todosList.add(Patient(
+            id: myResponse["userId"],
+            patientEmail: email,
+          ));
+        });
       } else {
         print("Error in linking patient");
         print(linkresponse.statusCode);
@@ -294,12 +301,6 @@ class _CaretakerHomeState extends State<CaretakerHome> {
       print(response.headers);
     }
 
-    setState(() {
-      todosList.add(Patient(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        patientEmail: email,
-      ));
-    });
     _todoController.clear();
   }
 

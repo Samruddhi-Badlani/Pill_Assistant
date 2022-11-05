@@ -25,46 +25,50 @@ class PatientItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      child: ListTile(
-        onTap: () {
-          // print('Clicked on Todo Item.');
-          onToDoChanged(patient);
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-        tileColor: Colors.white,
-        leading: Icon(
-          patient.isDone ? Icons.check_box : Icons.check_box_outline_blank,
-          color: tdBlue,
-        ),
-        title: Text(
-          patient?.patientEmail ?? '',
-          style: TextStyle(
-            fontSize: 16,
-            color: tdBlack,
-            decoration: patient.isDone ? TextDecoration.lineThrough : null,
-          ),
-        ),
-        trailing: Container(
-          padding: EdgeInsets.all(0),
-          margin: EdgeInsets.symmetric(vertical: 12),
-          height: 35,
-          width: 100,
-          decoration: BoxDecoration(
-            color: tdBGColor,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: TextButton(
-            child: Text('Discharged'),
-            onPressed: () {
-// print('Clicked on delete icon');
-              onDeleteItem(patient.id);
+      margin: EdgeInsets.all(8),
+      child: Column(
+        children: [
+          ListTile(
+            onTap: () {
+              // print('Clicked on Todo Item.');
+              onToDoChanged(patient);
             },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            tileColor: Colors.white,
+            leading: Icon(
+              patient.isDone ? Icons.check_box : Icons.check_box_outline_blank,
+              color: tdBlue,
+            ),
+            title: Text(
+              patient?.patientEmail ?? '',
+              style: TextStyle(
+                fontSize: 16,
+                color: tdBlack,
+                decoration: patient.isDone ? TextDecoration.lineThrough : null,
+              ),
+            ),
+            trailing: Container(
+              padding: EdgeInsets.all(0),
+              margin: EdgeInsets.symmetric(vertical: 12),
+              height: 35,
+              width: 100,
+              decoration: BoxDecoration(
+                color: tdBGColor,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: TextButton(
+                child: Text('Discharged'),
+                onPressed: () {
+// print('Clicked on delete icon');
+                  onDeleteItem(patient.id);
+                },
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

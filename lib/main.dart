@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pill_assistant/pages/caretakerHome.dart';
+import 'package:pill_assistant/pages/caretakerPatient.dart';
 import 'package:pill_assistant/pages/edit-med-form.dart';
 import 'package:pill_assistant/pages/generateQR.dart';
 import 'package:pill_assistant/pages/home-page.dart';
@@ -34,7 +35,7 @@ Future<void> main() async {
       'settings': (context) => SettingsScreen(),
       'generateQR': (context) => Generate(),
       'scanQR': (context) => Scanner(),
-      'caretakerHome': (context) => CaretakerHome()
+      'caretakerHome': (context) => CaretakerHome(),
     },
   ));
 }

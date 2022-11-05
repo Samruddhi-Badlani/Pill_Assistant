@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pill_assistant/pages/caretakerPatient.dart';
 
 import '../model/patient.dart';
 import 'package:http/http.dart' as http;
@@ -137,7 +138,7 @@ class _CaretakerHomeState extends State<CaretakerHome> {
                           bottom: 20,
                         ),
                         child: Text(
-                          'All ToDos',
+                          'All Patients',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
@@ -219,10 +220,24 @@ class _CaretakerHomeState extends State<CaretakerHome> {
     );
   }
 
-  void _handleToDoChange(Patient todo) {
+  void _handleToDoChange(Patient patient) {
+    /*
     setState(() {
       todo.isDone = !todo.isDone;
     });
+
+    */
+
+    print("handle to do change called");
+
+    print(patient.id);
+    print(patient.patientEmail);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CaretakerPatientInterface(patient: patient)),
+    );
   }
 
   void _deleteToDoItem(String id) {

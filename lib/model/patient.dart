@@ -12,8 +12,4 @@ class Patient {
     required this.patientEmail,
     this.isDone = false,
   });
-
-  static List<Patient> todoList() {
-    return [Patient(id: "12", patientEmail: "xjjsj")];
-  }
 }

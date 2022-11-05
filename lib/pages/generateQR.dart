@@ -145,6 +145,7 @@ class _GenerateState extends State<Generate> {
                     },
                     child: Text("Generate QR code")),
                 if (image != null) ...{Image(image: MemoryImage(image))},
+                if (image != null) ...{Text("QR Saved in gallery !!")},
               ],
             ),
           ),

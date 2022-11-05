@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:pill_assistant/pages/caretakerHome.dart';
 import 'package:pill_assistant/pages/edit-med-form.dart';
 import 'package:pill_assistant/pages/generateQR.dart';
 import 'package:pill_assistant/pages/home-page.dart';
@@ -32,7 +33,8 @@ Future<void> main() async {
       'profile': (context) => EditProfilePage(),
       'settings': (context) => SettingsScreen(),
       'generateQR': (context) => Generate(),
-      'scanQR': (context) => Scanner()
+      'scanQR': (context) => Scanner(),
+      'caretakerHome': (context) => CaretakerHome()
     },
   ));
 }

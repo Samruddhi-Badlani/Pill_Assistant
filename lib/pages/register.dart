@@ -16,6 +16,8 @@ class _RegisterState extends State<Register> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormFieldState>();
 
@@ -23,6 +25,7 @@ class _RegisterState extends State<Register> {
   String lastName = '';
   String email = '';
   String password = '';
+  String type = '';
 
   onSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -31,8 +34,9 @@ class _RegisterState extends State<Register> {
       print(lastNameController.text);
       print(emailController.text);
       print(passwordController.text);
+      print(typeController.text);
 
-      final queryParameters = {'type': 'user'};
+      final queryParameters = {'type': typeController.text};
 
       var uri = Uri.https('pill-management-backend.herokuapp.com',
           "/mobile-app-ws/users", queryParameters);
@@ -268,7 +272,7 @@ class _RegisterState extends State<Register> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                      color: Colors.black,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   hintText: "Email",
@@ -280,12 +284,60 @@ class _RegisterState extends State<Register> {
                             SizedBox(
                               height: 10,
                             ),
+                            DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    hintText: "Email",
+                                    hintStyle: TextStyle(color: Colors.white),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )),
+                                items: <String>[
+                                  'user',
+                                  'caretaker',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      typeController.text = value;
+                                    });
+                                  }
+                                },
+                                hint: Text(
+                                  "Please choose a User Type",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            SizedBox(
+                              height: 10,
+                            ),
                             TextFormField(
                               style: TextStyle(color: Colors.white),
                               controller: passwordController,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter a name';
+                                  return 'Please enter a password';
                                 } else {
                                   return null;
                                 }

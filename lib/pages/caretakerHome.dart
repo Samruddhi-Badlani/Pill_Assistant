@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../model/patient.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 import '../widgets/patient_item.dart';
 
@@ -12,22 +15,102 @@ const Color tdGrey = Color(0xFF717171);
 
 const Color tdBGColor = Color(0xFFEEEFF5);
 
-class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+class CaretakerHome extends StatefulWidget {
+  CaretakerHome({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<CaretakerHome> createState() => _CaretakerHomeState();
 }
 
-class _HomeState extends State<Home> {
-  final List<Patient> todosList = Patient.todoList();
+class _CaretakerHomeState extends State<CaretakerHome> {
+  List<Patient> todosList = [];
+
+  List<Patient> myPatients = [];
+
   List<Patient> _foundToDo = [];
   final _todoController = TextEditingController();
 
   @override
   void initState() {
-    _foundToDo = todosList;
     super.initState();
+
+    _loadPatientsInfo();
+  }
+
+  void _loadPatientsInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var caretakerId = prefs.get('userid').toString();
+
+    print("Get all patients api will be called ");
+
+    // Getting user id from email
+
+    var uri = Uri.https('pill-management-backend.herokuapp.com',
+        "/mobile-app-ws/caretaker/$caretakerId");
+
+    final http.Response response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': prefs.get('authToken').toString(),
+        'userid': prefs.get('userid').toString()
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print(response.body);
+
+      var myResponse = json.decode(response.body);
+
+      for (var patient in myResponse) {
+        print("Hello");
+        print(patient);
+
+        // Getting patient details
+
+        var uri = Uri.https('pill-management-backend.herokuapp.com',
+            "/mobile-app-ws/users/${patient['userId'].toString()}");
+
+        final http.Response responsePatient = await http.get(
+          uri,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'authorization': prefs.get('authToken').toString(),
+            'userid': prefs.get('userid').toString()
+          },
+        );
+
+        if (responsePatient.statusCode == 200) {
+          print("Patient details fetched");
+          print(responsePatient.body);
+
+          var actualPatient = json.decode(responsePatient.body);
+
+          myPatients.add(Patient(
+              id: actualPatient["userId"].toString(),
+              patientEmail: actualPatient["email"]));
+        } else {
+          print("Patient details could not be fetched");
+        }
+      }
+
+      print("patient list ");
+      print(myPatients.length);
+
+      setState(() {
+        todosList = myPatients;
+      });
+      setState(() {
+        _foundToDo = todosList;
+      });
+
+      print("to do list");
+      print(todosList.length);
+    } else {
+      print("Error in loading all patients");
+      print(response.statusCode);
+    }
   }
 
   @override
@@ -148,11 +231,73 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _addToDoItem(String toDo) {
+  void _addToDoItem(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var caretakerId = prefs.get('userid').toString();
+
+    final queryParameters = {'type': 'user'};
+
+    // Getting user id from email
+
+    var uri = Uri.https('pill-management-backend.herokuapp.com',
+        "/mobile-app-ws/users/email/$email", queryParameters);
+
+    final http.Response response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': prefs.get('authToken').toString(),
+        'userid': prefs.get('userid').toString()
+      },
+    );
+
+    var myResponse;
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print(response.headers);
+
+      if (response.body.isNotEmpty) {
+        myResponse = json.decode(response.body);
+        print(response.body);
+      } else {
+        print('getting user from email  response is empty');
+      }
+
+      // Creating a link between caretaker and user
+
+      var patientId = myResponse["userId"];
+      print("Patient id is  " + patientId.toString());
+      print("Patient name is " + myResponse["firstName"].toString());
+      var uri = Uri.https('pill-management-backend.herokuapp.com',
+          "/mobile-app-ws/users/$patientId/caretaker/$caretakerId");
+
+      final http.Response linkresponse = await http.post(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'authorization': prefs.get('authToken').toString(),
+          'userid': prefs.get('userid').toString()
+        },
+      );
+
+      if (linkresponse.statusCode == 200) {
+        print("Patient added successfully");
+      } else {
+        print("Error in linking patient");
+        print(linkresponse.statusCode);
+        print(linkresponse.body);
+      }
+    } else {
+      print(response.statusCode);
+      print(response.body);
+      print(response.headers);
+    }
+
     setState(() {
       todosList.add(Patient(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        patientEmail: toDo,
+        patientEmail: email,
       ));
     });
     _todoController.clear();

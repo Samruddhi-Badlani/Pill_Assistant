@@ -1,3 +1,7 @@
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 class Patient {
   String? id;
   String? patientEmail;
@@ -10,9 +14,6 @@ class Patient {
   });
 
   static List<Patient> todoList() {
-    return [
-      Patient(id: '01', patientEmail: 'rishabh@gmail.com', isDone: true),
-      Patient(id: '02', patientEmail: 'anushka@gmail.com', isDone: true),
-    ];
+    return [Patient(id: "12", patientEmail: "xjjsj")];
   }
 }

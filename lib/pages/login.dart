@@ -16,6 +16,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _LoginState extends State<Login> {
 
   String email = '';
   String password = '';
+  String type = '';
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormFieldState>();
 
@@ -120,7 +122,55 @@ class _LoginState extends State<Login> {
                                   )),
                             ),
                             SizedBox(
-                              height: 40,
+                              height: 30,
+                            ),
+                            DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    hintText: "Email",
+                                    hintStyle: TextStyle(color: Colors.white),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )),
+                                items: <String>[
+                                  'user',
+                                  'caretaker',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      typeController.text = value;
+                                    });
+                                  }
+                                },
+                                hint: Text(
+                                  "Please choose a User Type",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            SizedBox(
+                              height: 30,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,7 +196,7 @@ class _LoginState extends State<Login> {
                                                   .getInstance();
 
                                           final queryParameters = {
-                                            'type': 'user'
+                                            'type': typeController.text
                                           };
 
                                           var uri = Uri.https(
@@ -189,8 +239,13 @@ class _LoginState extends State<Login> {
                                                 response.headers['userid']
                                                     .toString());
 
-                                            Navigator.pushNamed(
-                                                context, 'home');
+                                            if (typeController.text == 'user') {
+                                              Navigator.pushNamed(
+                                                  context, 'home');
+                                            } else {
+                                              Navigator.pushNamed(
+                                                  context, 'caretakerHome');
+                                            }
                                           } else {
                                             print(response.statusCode);
                                             print(response.body);

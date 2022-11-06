@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 const Color tdBlue = Color(0xFF0277BD);
 
@@ -41,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               GridView(
+                physics: ScrollPhysics(),
                 // ignore: sort_child_properties_last
                 shrinkWrap: true,
 
@@ -197,6 +200,57 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+
+                      final userId = prefs.get('userid').toString();
+
+                      var uri = Uri.https(
+                          'pill-management-backend.herokuapp.com',
+                          "/mobile-app-ws/users/${userId}/msg");
+
+                      final http.Response response = await http.post(
+                        uri,
+                        headers: <String, String>{
+                          'Content-Type': 'application/json; charset=UTF-8',
+                          'authorization': prefs.get('authToken').toString(),
+                          'userid': userId
+                        },
+                      );
+
+                      if (response.statusCode == 200) {
+                        print(response.body);
+                        print("Message sent Successfully");
+                        print(response.statusCode);
+                        print(response.headers);
+                      } else {
+                        print(response.statusCode);
+                        print("ERROR in sending message");
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: tdBlue,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.message,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Send Message to Contact",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )
+                        ],
+                      ),
+                    ),
                   )
                 ],
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -220,7 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
                     },
                     child: Text('Log Out')),
-              )
+              ),
             ],
           ),
         ),

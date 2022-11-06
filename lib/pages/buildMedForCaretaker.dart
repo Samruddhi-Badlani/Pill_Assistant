@@ -151,7 +151,7 @@ class _MedTableCaretakerState extends State<MedTableCaretaker> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "My Medicines",
+              "Medicines",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,

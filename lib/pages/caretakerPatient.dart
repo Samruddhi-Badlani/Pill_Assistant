@@ -137,6 +137,7 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                         ),
                       ),
                     ),
+                    /*
                     GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, 'settings');
@@ -240,6 +241,7 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                         ),
                       ),
                     )
+                    */
                   ],
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,

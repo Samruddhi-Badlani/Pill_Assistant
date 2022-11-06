@@ -35,7 +35,7 @@ class _PatientsMedicineState extends State<PatientsMedicine> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Pill Assistant'),
+          title: Text(myPatient["email"]),
         ),
         body: MedTableCaretaker(
           myPatient: myPatient,

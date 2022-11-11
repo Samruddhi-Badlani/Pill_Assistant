@@ -1,6 +1,7 @@
 // ignore_for_file: sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:pill_assistant/pages/generateQRByCaretaker.dart';
 import 'package:pill_assistant/pages/patientsMedicines.dart';
 import '../model/patient.dart';
 import 'package:http/http.dart' as http;
@@ -189,9 +190,10 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                         ),
                       ),
                     ),
+                    
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, 'scanQR');
+                       
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -215,9 +217,16 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                         ),
                       ),
                     ),
+                    */
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, 'generateQR');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GenerateByCaretaker(
+                                    myPatient: myPatient,
+                                  )),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -241,7 +250,6 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                         ),
                       ),
                     )
-                    */
                   ],
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,

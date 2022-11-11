@@ -269,7 +269,8 @@ class _ScannerState extends State<Scanner> {
                 myMedicineScannedData = json.decode(getResponse.body);
               });
             }
-            print(getResponse.statusCode);
+
+            print(getResponse.body);
             print(getResponse.headers);
           } else {}
         }

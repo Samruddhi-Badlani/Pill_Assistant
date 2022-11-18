@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 
 // class FormApp extends StatelessWidget {
 //   const FormApp({Key? key}) : super(key: key);
@@ -109,7 +110,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   var dosages = [];
 
-  int _dosageCount = 1;
+  var _dosageCount = 1.0;
   DateTime _dosageTime = DateTime(2022);
 
   List<DropdownMenuItem<int>> genderList = [];
@@ -358,7 +359,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       onSaved: (value) {
         setState(() {
-          _dosageCount = int.parse(value.toString());
+          _dosageCount = double.parse(value.toString());
           dosageCountController.text = value.toString();
         });
       },
@@ -410,6 +411,35 @@ class _SignUpFormState extends State<SignUpForm> {
             "dosesCount": item["dosageCount"]
           });
         }
+
+        /*
+
+        void test() async {
+          print(myList);
+          print(dosages);
+          var myalarm = [];
+          for (var time in dosages) {
+            var hour, minute, title, skipUi;
+            hour = int.parse(time["dosageTime"].split(":")[0]);
+            print(hour);
+            minute = int.parse(time["dosageTime"].split(":")[1]);
+            print(minute);
+            if (hour >= 6 && hour <= 10)
+              title = "Please take your morning medicine ${_name}";
+            else if (hour >= 11 && hour <= 15)
+              title = "Please take your afternoon medicine  ${_name}";
+            else if (hour >= 17 && hour <= 23)
+              title = "Please take your evening medicine  ${_name}";
+            else
+              title = "Please take your  medicine  ${_name}";
+            FlutterAlarmClock.createAlarm(hour, minute, title: title);
+          }
+        }
+
+        test();
+
+
+        */
 
         print(myList);
 

@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+var subscribedActionStream = false;
+var medTaken;
 const Color tdBlue = Color(0xFF0277BD);
 
 class MyHomePage extends StatefulWidget {
@@ -33,6 +36,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!subscribedActionStream) {
+      AwesomeNotifications().actionStream.listen((action) {
+        if (action.buttonKeyPressed == "yes") {
+          print("Thanks for taking medicine");
+          setState(() {
+            medTaken = "yes";
+          });
+        } else if (action.buttonKeyPressed == "no") {
+          print("You have missed dose!!!");
+
+          setState(() {
+            medTaken = "no";
+          });
+        }
+
+        subscribedActionStream = true;
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome"),

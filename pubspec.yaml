@@ -50,6 +50,9 @@ dependencies:
   ionicons: ^0.1.2
   http: ^0.13.5
 
+  awesome_notifications: ^0.6.19
+  flutter_alarm_clock: ^0.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

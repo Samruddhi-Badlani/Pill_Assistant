@@ -16,9 +16,23 @@ import 'package:pill_assistant/pages/scanQR.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pill_assistant/pages/profile.dart';
 import 'package:pill_assistant/pages/settings.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  AwesomeNotifications().initialize(null, [
+    // notification icon
+    NotificationChannel(
+      channelGroupKey: 'basic_test',
+      channelKey: 'basic',
+      channelName: 'Basic notifications',
+      channelDescription: 'Notification channel for basic tests',
+      channelShowBadge: true,
+      importance: NotificationImportance.High,
+      enableVibration: true,
+    ),
+  ]);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool checkLogin = prefs.containsKey('authToken');
   runApp(MaterialApp(

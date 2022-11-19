@@ -22,6 +22,7 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool checkLogin = prefs.containsKey('authToken');
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     initialRoute: checkLogin ? 'home' : 'login',
     routes: {
       'login': (context) => Login(),

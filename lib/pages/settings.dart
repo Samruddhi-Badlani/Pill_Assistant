@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-
 // void main() {
 //   runApp(const MyApp());
 // }
@@ -77,8 +76,6 @@ class SettingsTile extends StatelessWidget {
   }
 }
 
-
-
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -90,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(   
+      appBar: AppBar(
         title: const Text("Settings"),
       ),
       body: SafeArea(
@@ -153,4 +150,3 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 }
-

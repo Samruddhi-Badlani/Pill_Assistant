@@ -282,25 +282,53 @@ class _ScannerState extends State<Scanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("QR Code Scanner")),
-      body: SingleChildScrollView(
+      body: Container(
+          alignment: Alignment.topCenter,
+          padding: EdgeInsets.all(15),
           child: Column(
-        children: [
-          TextButton(
-              onPressed: scanQR, child: Text("Scan any qr code - Camera")),
-          TextButton(
-              onPressed: scanQRGallery, child: Text("Scan thorugh Gallery")),
-          if (myMedicineScannedData != null) ...{
-            Column(children: [
-              Text('Name : ' + myMedicineScannedData["name"]),
-              Text('Expriy Date : ' +
-                  myMedicineScannedData["expiryDate"].toString()),
-              Text('Available Count ' +
-                  myMedicineScannedData["availableCount"].toString())
-            ])
-          },
-          if (errorText != null) ...{Text(errorText.toString())}
-        ],
-      )),
+            children: [
+              Container(
+                margin: EdgeInsets.all(10),
+                child: TextButton(
+                  onPressed: scanQR,
+                  child: Text(
+                    "Scan any qr code from Camera",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(30),
+                      foregroundColor: Colors.white,
+                      elevation: 2,
+                      backgroundColor: Colors.blue),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                child: TextButton(
+                  onPressed: scanQRGallery,
+                  child: Text(
+                    "Scan any qr code from Gallery",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(30),
+                      foregroundColor: Colors.white,
+                      elevation: 2,
+                      backgroundColor: Colors.blue),
+                ),
+              ),
+              if (myMedicineScannedData != null) ...{
+                Column(children: [
+                  Text('Name : ' + myMedicineScannedData["name"]),
+                  Text('Expriy Date : ' +
+                      myMedicineScannedData["expiryDate"].toString()),
+                  Text('Available Count ' +
+                      myMedicineScannedData["availableCount"].toString())
+                ])
+              },
+              if (errorText != null) ...{Text(errorText.toString())}
+            ],
+          )),
     );
   }
 }

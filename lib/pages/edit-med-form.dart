@@ -373,8 +373,9 @@ class _SignUpFormState extends State<SignUpForm> {
       },
     ));
     formWidget.add(TextFormField(
-      decoration: const InputDecoration(
-          labelText: 'Enter available Counts', hintText: 'Dosage'),
+      controller: dosageCountController,
+      decoration:
+          const InputDecoration(labelText: 'Dosage Count', hintText: 'Dosage'),
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
@@ -409,12 +410,15 @@ class _SignUpFormState extends State<SignUpForm> {
         print(dosageCountController.text);
         print(_dosageTime);
 
-        setState(() {
-          dosages.add({
-            "dosageCount": dosageCountController.text,
-            "dosageTime": timeinput.text
+        if (dosageCountController.text == '' || timeinput.text == '') {
+        } else {
+          setState(() {
+            dosages.add({
+              "dosageCount": dosageCountController.text,
+              "dosageTime": timeinput.text
+            });
           });
-        });
+        }
         print(dosages);
       },
       child: Text('Add Dose'),

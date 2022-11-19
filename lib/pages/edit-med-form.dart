@@ -174,9 +174,14 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter a value';
-        } else {
-          return null;
         }
+        if (double.tryParse(value) == null) {
+          return 'Please enter a valid number.';
+        }
+        if (double.parse(value) <= 0) {
+          return 'Please enter a number greater than zero.';
+        }
+        return null;
       },
       onSaved: (value) {
         setState(() {

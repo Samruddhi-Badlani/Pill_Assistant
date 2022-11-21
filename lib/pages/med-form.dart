@@ -1,7 +1,12 @@
+import 'dart:math';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'dart:math';
 import 'dart:convert';
 
 // class FormApp extends StatelessWidget {
@@ -27,6 +32,9 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
+  var subscribedActionStream = false;
+
+  var medId;
   @override
   void initState() {
     super.initState();
@@ -109,10 +117,12 @@ class _SignUpFormState extends State<SignUpForm> {
 
   var dosages = [];
 
-  int _dosageCount = 1;
+  var _dosageCount;
   DateTime _dosageTime = DateTime(2022);
 
   List<DropdownMenuItem<int>> genderList = [];
+
+  var subscribedActionStream = false;
 
   @override
   Widget build(BuildContext context) {
@@ -363,7 +373,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       onSaved: (value) {
         setState(() {
-          _dosageCount = int.parse(value.toString());
+          _dosageCount = double.parse(value.toString());
           dosageCountController.text = value.toString();
         });
       },
@@ -409,6 +419,102 @@ class _SignUpFormState extends State<SignUpForm> {
 
         var myList = [];
 
+        void createNotification(hour, minute, medId) async {
+          setState(() {
+            medId = medId;
+          });
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          prefs.setString('medId', medId.toString());
+
+          print("Create Notification called");
+          var currentHour = DateTime.now().hour;
+          var currentMinute = DateTime.now().minute;
+
+          var hourDiff;
+          var minDiff;
+
+          if (currentHour <= hour) {
+            hourDiff = hour - currentHour;
+          } else {
+            hourDiff = (24 - currentHour) + hour;
+          }
+
+          if (currentMinute <= minute) {
+            minDiff = minute - currentMinute;
+          } else {
+            minDiff = (60 - minute) + currentMinute;
+          }
+
+          var totalSec = minDiff * 60 + hourDiff * 60 * 60;
+
+          if (totalSec <= 60) {
+            totalSec = totalSec + 30;
+          } else {
+            totalSec = totalSec + 60;
+          }
+
+          print(totalSec);
+
+          print("Start wait for notification");
+
+          subscribedActionStream = false;
+
+          await Future.delayed(Duration(seconds: totalSec));
+
+          print("Wait ended for notification");
+
+          bool isallowed = await AwesomeNotifications().isNotificationAllowed();
+          if (!isallowed) {
+            //no permission of local notification
+            AwesomeNotifications().requestPermissionToSendNotifications();
+          } else {
+            await AwesomeNotifications().createNotification(
+                content: NotificationContent(
+                  //simgple notification
+                  id: medId,
+                  channelKey: 'basic', //set configuration wuth key "basic"
+                  title: 'Pill Assistant',
+                  body: 'Have you taken medicine ${_name}',
+                  payload: {"name": "FlutterCampus"},
+                  autoDismissible: false,
+                ),
+                actionButtons: [
+                  NotificationActionButton(
+                    key: "yes",
+                    label: "Yes",
+                  ),
+                  NotificationActionButton(
+                    key: "no",
+                    label: "No",
+                  )
+                ]);
+          }
+        }
+
+        void test() async {
+          print(myList);
+          print(dosages);
+          var myalarm = [];
+          for (var time in dosages) {
+            var hour, minute, title, skipUi;
+            hour = int.parse(time["dosageTime"].split(":")[0]);
+            print(hour);
+            minute = int.parse(time["dosageTime"].split(":")[1]);
+            print(minute);
+            if (hour >= 6 && hour <= 10)
+              title = "Please take your morning medicine ${_name}";
+            else if (hour >= 11 && hour <= 15)
+              title = "Please take your afternoon medicine  ${_name}";
+            else if (hour >= 17 && hour <= 23)
+              title = "Please take your evening medicine  ${_name}";
+            else
+              title = "Please take your  medicine  ${_name}";
+            FlutterAlarmClock.createAlarm(hour, minute, title: title);
+          }
+        }
+
         for (var item in dosages) {
           myList.add({
             "dosageTime": item["dosageTime"].toString(),
@@ -453,6 +559,16 @@ class _SignUpFormState extends State<SignUpForm> {
 
         print(response.body);
         print(response.statusCode);
+
+        if (response.statusCode == 200) {
+          var medId = json.decode(response.body)["id"];
+          for (var item in dosages) {
+            createNotification(int.parse(item["dosageTime"].split(":")[0]),
+                int.parse(item["dosageTime"].split(":")[1]), medId);
+
+            test();
+          }
+        }
         print(response.headers);
 
         ScaffoldMessenger.of(context)

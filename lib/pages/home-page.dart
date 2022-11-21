@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+var subscribedActionStream = false;
 const Color tdBlue = Color(0xFF0277BD);
 
 class MyHomePage extends StatefulWidget {
@@ -33,6 +35,108 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!subscribedActionStream) {
+      AwesomeNotifications().actionStream.listen((action) async {
+        var medicineInfo;
+
+        if (action.buttonKeyPressed == "yes") {
+          print("Thanks for taking medicine");
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          final userId = prefs.get('userid').toString();
+
+          final medId = prefs.get('medId').toString();
+
+          final queryParameters = {'type': 'user'};
+
+          var uri = Uri.https(
+              'pill-management-backend.herokuapp.com',
+              "/mobile-app-ws/users/${userId}/medicine/${medId}",
+              queryParameters);
+
+          final http.Response response = await http.get(
+            uri,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'authorization': prefs.get('authToken').toString(),
+              'userid': userId
+            },
+          );
+
+          if (response.statusCode == 200) {
+            print("Medicine details not found .....");
+            print(response.body);
+            print(response.statusCode);
+            print(response.headers);
+
+            medicineInfo = json.decode(response.body);
+
+/*
+            setState(() {
+              medicineInfo = json.decode(response.body);
+
+              print("Current medicine count is " +
+                  medicineInfo["availableCount"].toString());
+            });
+
+            */
+
+            print("Now deleting available counts .... ");
+
+            var bodyContent = {
+              "availableCount": medicineInfo['availableCount'] - 1,
+              "dateOfEnd": medicineInfo["dateOfEnd"],
+              "dateOfStart": medicineInfo["dateOfStart"],
+              "dosages": medicineInfo["dosages"],
+              "expiryDate": medicineInfo["expiryDate"],
+              "manufacturingDate": medicineInfo["manufacturingDate"],
+              "name": medicineInfo["name"],
+              "id": medicineInfo["id"],
+              "userId": userId
+            };
+
+            var myContent = json.encode(bodyContent);
+
+            print("Content send for editing available count is");
+            print(myContent);
+            var uri2 = Uri.https(
+                'pill-management-backend.herokuapp.com',
+                "/mobile-app-ws/users/${userId}/medicine/${medId}",
+                queryParameters);
+
+            final http.Response response2 = await http.put(uri2,
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                  'authorization': prefs.get('authToken').toString(),
+                  'userid': userId,
+                },
+                body: myContent);
+
+            if (response2.statusCode == 200) {
+              print(response2.body);
+              print("User medicine successfully");
+              print(response2.statusCode);
+              print(response2.headers);
+            } else {
+              print(response2.body);
+              print(response2.statusCode);
+              print("User medicine could not be updated");
+            }
+
+            print("Current info is   .......");
+          } else {
+            print(response.statusCode);
+            print("Medicine details could not be fetched");
+          }
+        } else if (action.buttonKeyPressed == "no") {
+          print("You missed your dose!!!");
+        } else {
+          print(action.payload); //notification was pressed
+        }
+      });
+      subscribedActionStream = true;
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome"),

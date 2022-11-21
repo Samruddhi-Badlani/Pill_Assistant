@@ -268,6 +268,8 @@ class _ScannerState extends State<Scanner> {
               setState(() {
                 myMedicineScannedData = json.decode(getResponse.body);
               });
+            } else {
+              myMedicineScannedData = null;
             }
 
             print(getResponse.body);

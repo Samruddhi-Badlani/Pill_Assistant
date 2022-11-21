@@ -32,6 +32,9 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
+  var subscribedActionStream = false;
+
+  var medId;
   @override
   void initState() {
     super.initState();
@@ -417,6 +420,14 @@ class _SignUpFormState extends State<SignUpForm> {
         var myList = [];
 
         void createNotification(hour, minute, medId) async {
+          setState(() {
+            medId = medId;
+          });
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          prefs.setString('medId', medId.toString());
+
           print("Create Notification called");
           var currentHour = DateTime.now().hour;
           var currentMinute = DateTime.now().minute;

@@ -297,7 +297,7 @@ class _ScannerState extends State<Scanner> {
                   ),
                   style: TextButton.styleFrom(
                       padding: EdgeInsets.all(30),
-                      //foregroundColor: Colors.white,
+                      primary: Colors.white,
                       elevation: 2,
                       backgroundColor: Colors.blue),
                 ),
@@ -313,6 +313,7 @@ class _ScannerState extends State<Scanner> {
                   style: TextButton.styleFrom(
                       padding: EdgeInsets.all(30),
                       // foregroundColor: Colors.white,
+                      primary: Colors.white,
                       elevation: 2,
                       backgroundColor: Colors.blue),
                 ),

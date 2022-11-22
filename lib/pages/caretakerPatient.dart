@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:pill_assistant/pages/generateQRByCaretaker.dart';
 import 'package:pill_assistant/pages/patientsMedicines.dart';
+import 'package:pill_assistant/pages/summary.dart';
 import '../model/patient.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -255,6 +256,31 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, 'summary');
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: tdBlue,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.access_alarm,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "Summary of Patients",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               },
               Container(

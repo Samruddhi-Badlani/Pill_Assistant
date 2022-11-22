@@ -350,7 +350,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text(
                             "Send Message to Contact",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           )
                         ],
                       ),

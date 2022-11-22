@@ -106,7 +106,7 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                               "Patient's medicines",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             )
                           ],
@@ -133,7 +133,7 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                             Text(
                               "Patient's reminders",
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             )
                           ],
                         ),
@@ -245,7 +245,33 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                             Text(
                               "Generate QR code",
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, 'summary');
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: tdBlue,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.access_alarm,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Summary of Patients",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 17),
                             )
                           ],
                         ),
@@ -256,31 +282,6 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, 'summary');
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: tdBlue,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.access_alarm,
-                          size: 50,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          "Summary of Patients",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ),
                 ),
               },
               Container(

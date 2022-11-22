@@ -171,7 +171,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               if (user != null) ...{
                 buildTextField("Full Name", '${user["firstName"]}', false),
                 buildTextField("Registered As", "Patient", false),
-                buildTextField("E-mail", "${user['email']}", false),
+
                 TextField(
                     controller: contactNameController,
                     decoration: InputDecoration(
@@ -260,7 +260,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             'userid': userId
                           },
                           body: jsonEncode(<String, dynamic>{
-                            'email': user["email"],
                             'firstName': user["firstName"],
                             'lastName': user["lastName"],
                             'emergencyContacts': {'contactlist': contacts}

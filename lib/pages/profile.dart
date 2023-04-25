@@ -54,7 +54,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     final queryParameters = {'type': 'user'};
 
-    var uri = Uri.https('pill-management-backend.herokuapp.com',
+    var uri = Uri.http('192.168.97.35:8888',
         "/mobile-app-ws/users/${userId}", queryParameters);
 
     final http.Response response = await http.get(
@@ -248,8 +248,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                       final queryParameters = {'type': 'user'};
 
-                      var uri = Uri.https(
-                          'pill-management-backend.herokuapp.com',
+                      var uri = Uri.http(
+                          '192.168.97.35:8888',
                           "/mobile-app-ws/users/${userId}",
                           queryParameters);
 

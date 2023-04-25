@@ -130,8 +130,8 @@ class _ScannerState extends State<Scanner> {
           final queryParameters = {'type': 'user'};
 
           if (medicineId != null) {
-            var uri = Uri.https(
-                'pill-management-backend.herokuapp.com',
+            var uri = Uri.http(
+                '192.168.97.35:8888',
                 "/mobile-app-ws/users/${userId}/medicine/${medicineId}",
                 queryParameters);
 
@@ -249,8 +249,8 @@ class _ScannerState extends State<Scanner> {
           final queryParameters = {'type': 'user'};
 
           if (medicineId != null) {
-            var uri = Uri.https(
-                'pill-management-backend.herokuapp.com',
+            var uri = Uri.http(
+                '192.168.97.35:8888',
                 "/mobile-app-ws/users/${userId}/medicine/${medicineId}",
                 queryParameters);
 

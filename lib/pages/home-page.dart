@@ -50,8 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
           final queryParameters = {'type': 'user'};
 
-          var uri = Uri.https(
-              'pill-management-backend.herokuapp.com',
+          var uri = Uri.http(
+              '192.168.97.35:8888',
               "/mobile-app-ws/users/${userId}/medicine/${medId}",
               queryParameters);
 
@@ -100,8 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
             print("Content send for editing available count is");
             print(myContent);
-            var uri2 = Uri.https(
-                'pill-management-backend.herokuapp.com',
+            var uri2 = Uri.http(
+                '192.168.97.35:8888',
                 "/mobile-app-ws/users/${userId}/medicine/${medId}",
                 queryParameters);
 
@@ -312,8 +312,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
                       final userId = prefs.get('userid').toString();
 
-                      var uri = Uri.https(
-                          'pill-management-backend.herokuapp.com',
+                      var uri = Uri.http(
+                          '192.168.97.35:8888',
                           "/mobile-app-ws/users/${userId}/msg");
 
                       final http.Response response = await http.post(

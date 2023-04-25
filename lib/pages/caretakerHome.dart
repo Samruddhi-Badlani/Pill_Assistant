@@ -46,7 +46,7 @@ class _CaretakerHomeState extends State<CaretakerHome> {
 
     // Getting user id from email
 
-    var uri = Uri.https('pill-management-backend.herokuapp.com',
+    var uri = Uri.http('192.168.97.35:8888',
         "/mobile-app-ws/caretaker/$caretakerId");
 
     final http.Response response = await http.get(
@@ -70,7 +70,7 @@ class _CaretakerHomeState extends State<CaretakerHome> {
 
         // Getting patient details
 
-        var uri = Uri.https('pill-management-backend.herokuapp.com',
+        var uri = Uri.http('192.168.97.35:8888',
             "/mobile-app-ws/users/${patient['userId'].toString()}");
 
         final http.Response responsePatient = await http.get(
@@ -255,7 +255,7 @@ class _CaretakerHomeState extends State<CaretakerHome> {
 
     // Getting user id from email
 
-    var uri = Uri.https('pill-management-backend.herokuapp.com',
+    var uri = Uri.http('192.168.97.35:8888',
         "/mobile-app-ws/users/email/$email", queryParameters);
 
     final http.Response response = await http.get(
@@ -284,7 +284,7 @@ class _CaretakerHomeState extends State<CaretakerHome> {
       var patientId = myResponse["userId"];
       print("Patient id is  " + patientId.toString());
       print("Patient name is " + myResponse["firstName"].toString());
-      var uri = Uri.https('pill-management-backend.herokuapp.com',
+      var uri = Uri.http('192.168.97.35:8888',
           "/mobile-app-ws/users/$patientId/caretaker/$caretakerId");
 
       final http.Response linkresponse = await http.post(

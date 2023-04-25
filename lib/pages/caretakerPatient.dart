@@ -36,7 +36,7 @@ class _CaretakerPatientInterfaceState extends State<CaretakerPatientInterface> {
   _loadPatientInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var uri = Uri.https('pill-management-backend.herokuapp.com',
+    var uri = Uri.http('192.168.97.35:8888',
         "/mobile-app-ws/users/${patient.id}");
 
     final http.Response responsePatient = await http.get(

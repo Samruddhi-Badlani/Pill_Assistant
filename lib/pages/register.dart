@@ -38,8 +38,10 @@ class _RegisterState extends State<Register> {
 
       final queryParameters = {'type': typeController.text};
 
-      var uri = Uri.https('pill-management-backend.herokuapp.com',
+      var uri = Uri.http('192.168.97.35:8888',
           "/mobile-app-ws/users", queryParameters);
+
+      print(uri);
 
       final http.Response response = await http.post(
         uri,
@@ -51,11 +53,11 @@ class _RegisterState extends State<Register> {
           'firstName': firstNameController.text,
           'lastName': lastNameController.text,
           'password': passwordController.text,
-          'emergencyContacts': {
-            'contactlist': [
-              {'contactNumber': "+91 9144682214", 'name': "Tushar"}
-            ]
-          }
+          // 'emergencyContacts': {
+          //   'contactlist': [
+          //     {'contactNumber': "+91 9144682214", 'name': "Tushar"}
+          //   ]
+          // }
         }),
       );
 
@@ -395,7 +397,7 @@ class _RegisterState extends State<Register> {
                                       //   final http.Response response =
                                       //       await http.post(
                                              Uri.parse(
-                                                 'https://pill-management-backend.herokuapp.com/mobile-app-ws/users'),
+                                                 'https://192.168.97.35:8888/mobile-app-ws/users'),
                                              headers: <String, String>{
                                                'Content-Type':
                                                    'application/json; charset=UTF-8',

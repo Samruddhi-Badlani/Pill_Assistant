@@ -199,10 +199,11 @@ class _LoginState extends State<Login> {
                                             'type': typeController.text
                                           };
 
-                                          var uri = Uri.https(
-                                              'pill-management-backend.herokuapp.com',
+                                          var uri = Uri.http(
+                                              '192.168.97.35:8888',
                                               "/mobile-app-ws/users/login",
                                               queryParameters);
+
 
                                           final http.Response response =
                                               await http.post(

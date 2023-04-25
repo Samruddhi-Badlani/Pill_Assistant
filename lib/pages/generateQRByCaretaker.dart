@@ -48,8 +48,8 @@ class _GenerateByCaretakerState extends State<GenerateByCaretaker> {
 
     userId = myPatient["userId"];
 
-    var uri = Uri.https(
-        'pill-management-backend.herokuapp.com',
+    var uri = Uri.http(
+        '192.168.97.35:8888',
         "/mobile-app-ws/users/${myPatient["userId"]}/medicine",
         queryParameters);
 
@@ -91,7 +91,7 @@ class _GenerateByCaretakerState extends State<GenerateByCaretaker> {
       final queryParameters = {'data': medicineId};
 
       var uri =
-          Uri.https('api.qrserver.com', '/v1/create-qr-code', queryParameters);
+          Uri.http('api.qrserver.com', '/v1/create-qr-code', queryParameters);
 
       final http.Response response = await http.get(
         uri,

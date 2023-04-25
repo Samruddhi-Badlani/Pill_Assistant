@@ -265,6 +265,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             'emergencyContacts': {'contactlist': contacts}
                           }));
 
+                      print(response.body);
+
                       if (response.statusCode == 200) {
                         print(response.body);
                         print("User updated successfully");

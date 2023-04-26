@@ -32,6 +32,8 @@ class _MedicineTableState extends State<MedicineTable> {
   _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    myFetchedMedicine = [];
+    list = [];
     final userId = prefs.get('userid').toString();
 
     final queryParameters = {'type': 'user'};
@@ -54,12 +56,15 @@ class _MedicineTableState extends State<MedicineTable> {
 
     var myObj = json.decode(response.body);
 
+    debugPrint("api response is ");
     print(myObj);
+    debugPrint("my fetched medicine is ");
+    print(myFetchedMedicine);
     if (this.mounted) {
       for (var item in myObj) {
-        setState(() {
+
+          debugPrint("my obj loop");
           myFetchedMedicine.add(item);
-        });
       }
     }
 
@@ -68,10 +73,16 @@ class _MedicineTableState extends State<MedicineTable> {
     for (var item in myFetchedMedicine) {
       print(item["name"]);
     }
+
+    setState(() {
+
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    list = [];
     myFetchedMedicine.forEach((var m) => {
           log(m["name"]),
           list.add(DataRow(cells: [
@@ -144,18 +155,34 @@ class _MedicineTableState extends State<MedicineTable> {
           // })
         });
 
+    debugPrint("fetched medicines updated and result is ");
+    debugPrint(myFetchedMedicine.toString());
+
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "My Medicines",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 24,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "My Medicines",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () async {
+                    // handle refresh button click
+                    await _loadUserInfo();
+
+                  },
+                ),
+              ],
             ),
           ),
           DataTable(
@@ -167,7 +194,7 @@ class _MedicineTableState extends State<MedicineTable> {
               DataColumn(
                   label: Text('Action',
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))
             ],
             rows: list,
           ),
@@ -179,6 +206,7 @@ class _MedicineTableState extends State<MedicineTable> {
         ],
       ),
     );
+
   }
 }
 
